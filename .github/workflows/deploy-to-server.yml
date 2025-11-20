@@ -75,6 +75,6 @@ jobs:
           sed -i "s|dhxxn502/sopt_android1_server:.*|dhxxn502/sopt_android1_server:${{ github.sha }}|" apps/sopt-android1/deployment.yaml
           git config --global user.name "github-actions"
           git config --global user.email "actions@github.com"
-          git add apps/android1/deployment.yaml
+          git add apps/sopt-android1/deployment.yaml
           git commit -m "Update android1-server image to ${{ github.sha }}" || echo "No changes to commit"
           git push
