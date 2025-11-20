@@ -72,7 +72,7 @@ jobs:
       # 10. Deployment 이미지 태그 업데이트
       - name: Update image tag in deployment.yaml
         run: |
-          sed -i "s|dhxxn502/sopt_android1_server:.*|dhxxn502/sopt_android1_server:${{ github.sha }}|" apps/android1/deployment.yaml
+          sed -i "s|dhxxn502/sopt_android1_server:.*|dhxxn502/sopt_android1_server:${{ github.sha }}|" apps/sopt-android1/deployment.yaml
           git config --global user.name "github-actions"
           git config --global user.email "actions@github.com"
           git add apps/android1/deployment.yaml
