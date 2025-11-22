@@ -33,7 +33,7 @@ public class Comment extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private EOption option;
+    private EGameOption gameOption;
 
     @Column(nullable = false)
     private String content;

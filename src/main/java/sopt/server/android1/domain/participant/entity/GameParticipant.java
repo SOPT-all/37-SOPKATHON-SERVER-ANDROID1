@@ -18,7 +18,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import sopt.server.android1.domain.balanceGame.entity.BalanceGame;
-import sopt.server.android1.domain.comment.entity.EOption;
+import sopt.server.android1.domain.comment.entity.EGameOption;
 import sopt.server.android1.domain.member.entity.Member;
 import sopt.server.android1.global.base.BaseTimeEntity;
 
@@ -40,7 +40,7 @@ public class GameParticipant extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private EOption option;
+    private EGameOption gameOption;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "balance_game_id", nullable = false)
