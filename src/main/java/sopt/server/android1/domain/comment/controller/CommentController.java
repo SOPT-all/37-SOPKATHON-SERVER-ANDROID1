@@ -28,7 +28,7 @@ public class CommentController {
     @GetMapping
     public ListGetCommentResponseDto getComment(
             @PathVariable Long balanceGameId,
-            @RequestHeader(name = "X-Member_Id") Long memberId
+            @RequestHeader(name = "X-Member-Id") Long memberId
     ){
         return commentService.getComment(balanceGameId);
     }
