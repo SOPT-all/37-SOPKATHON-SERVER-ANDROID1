@@ -62,6 +62,7 @@ public class BalanceGame extends BaseTimeEntity {
     }
 
     @OneToMany(mappedBy = "balanceGame", orphanRemoval = true)
+    @OrderBy("createdAt DESC")
     private List<Comment> comments = new ArrayList<>();
 
     public void addComment(final Comment comment) {

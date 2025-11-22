@@ -24,7 +24,7 @@ public record CreateBalanceGameRequestDto(
         LocalDateTime deadline,
 
         @NotNull
-        @Schema(example = "FOOD")
+        @Schema(example = "HUMOR")
         ECategory category
 ) {
 }
