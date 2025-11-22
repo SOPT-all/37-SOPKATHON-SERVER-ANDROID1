@@ -10,6 +10,7 @@ public record BalanceGameDetailResponse(
     String option1Title,
     String option2Title,
     boolean isLike,
+    int likeCount,
     EGameOption memberOption,
     long option1Total,
     long option2Total,
