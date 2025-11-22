@@ -41,5 +41,12 @@ public class GameLike extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
+
+    public static GameLike create(final BalanceGame balanceGame,
+                                  final Member member) {
+        return GameLike.builder()
+                .balanceGame(balanceGame)
+                .member(member).build();
+    }
 }
 
