@@ -62,15 +62,17 @@ public class BalanceGameService {
     }
 
     public BalanceGameDetailResponse getTodayBalanceGame(Long memberId) {
-        List<BalanceGame> openGames = balanceGameRepository.findAllByDeadlineAfterOrderByDeadlineAsc(
-                LocalDateTime.now());
-        if (openGames.isEmpty()) {
-            throw BaseException.type(CommonErrorCode.NOT_FOUND_BALANCE_GAME);
-        }
-
-        int index = ThreadLocalRandom.current().nextInt(openGames.size());
-        BalanceGame randomGame = openGames.get(index);
-        return toDetailResponse(memberId, randomGame);
+//        List<BalanceGame> openGames = balanceGameRepository.findAllByDeadlineAfterOrderByDeadlineAsc(
+//                LocalDateTime.now());
+        BalanceGame balanceGame = balanceGameRepository.findById(121L).get();
+//        if (openGames.isEmpty()) {
+//            throw BaseException.type(CommonErrorCode.NOT_FOUND_BALANCE_GAME);
+//        }
+//
+//        int index = ThreadLocalRandom.current().nextInt(openGames.size());
+//        BalanceGame randomGame = openGames.get(index);
+//        return toDetailResponse(memberId, randomGame);
+        return toDetailResponse(memberId, balanceGame);
     }
 
     public BalanceGameListResponse getHotBalanceGames(Long memberId) {
