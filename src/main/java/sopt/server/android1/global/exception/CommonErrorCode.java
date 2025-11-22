@@ -15,6 +15,7 @@ public enum CommonErrorCode implements ErrorCode {
     MISSING_PATH_VARIABLE(HttpStatus.BAD_REQUEST, "COMMON_004", "필수 경로 변수가 누락되었습니다."),
     TYPE_MISMATCH(HttpStatus.BAD_REQUEST, "COMMON_005", "잘못된 데이터 타입입니다."),
     NOT_FOUND_URI(HttpStatus.NOT_FOUND, "COMMON_006", "존재하지 않는 URI입니다."),
+    NOT_FOUND_BALANCE_GAME(HttpStatus.NOT_FOUND, "BALANCE_GAME_001", "존재하지 않는 밸런스 게임입니다."),
     NOT_SUPPORTED_METHOD_ERROR(HttpStatus.METHOD_NOT_ALLOWED, "COMMON_007", "지원하지 않는 HTTP 메서드입니다."),
     NOT_SUPPORTED_MEDIA_TYPE_ERROR(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "COMMON_008", "지원하지 않는 미디어 타입입니다."),
 
