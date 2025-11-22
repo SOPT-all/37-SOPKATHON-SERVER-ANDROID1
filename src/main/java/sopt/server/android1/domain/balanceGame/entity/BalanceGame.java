@@ -1,19 +1,17 @@
 package sopt.server.android1.domain.balanceGame.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import sopt.server.android1.domain.comment.entity.Comment;
 import sopt.server.android1.global.base.BaseTimeEntity;
 
 @Getter
@@ -22,7 +20,7 @@ import sopt.server.android1.global.base.BaseTimeEntity;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "balance_games")
-public class BalanceGame extends BaseTimeEntity{
+public class BalanceGame extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -61,5 +59,12 @@ public class BalanceGame extends BaseTimeEntity{
                 .deadline(deadline)
                 .category(category)
                 .build();
+    }
+
+    @OneToMany(mappedBy = "balanceGame", orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
+
+    public void addComment(final Comment comment) {
+        comments.add(comment);
     }
 }

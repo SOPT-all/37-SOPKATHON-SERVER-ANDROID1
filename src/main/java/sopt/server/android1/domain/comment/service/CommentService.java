@@ -7,6 +7,8 @@ import sopt.server.android1.domain.balanceGame.entity.BalanceGame;
 import sopt.server.android1.domain.balanceGame.exception.BalanceGameErrorCode;
 import sopt.server.android1.domain.balanceGame.repository.BalanceGameRepository;
 import sopt.server.android1.domain.comment.dto.command.CreateCommentCommandDto;
+import sopt.server.android1.domain.comment.dto.response.GetCommentResponseDto;
+import sopt.server.android1.domain.comment.dto.response.ListGetCommentResponseDto;
 import sopt.server.android1.domain.comment.entity.Comment;
 import sopt.server.android1.domain.comment.repository.CommentRepository;
 import sopt.server.android1.domain.member.entity.Member;
@@ -16,6 +18,8 @@ import sopt.server.android1.domain.participant.entity.GameParticipant;
 import sopt.server.android1.domain.participant.exception.GameParticipantErrorCode;
 import sopt.server.android1.domain.participant.repository.GameParticipantRepository;
 import sopt.server.android1.global.exception.BaseException;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -45,5 +49,18 @@ public class CommentService {
                 member);
 
         commentRepository.save(comment);
+
+        balanceGame.addComment(comment);
+    }
+
+    @Transactional(readOnly = true)
+    public ListGetCommentResponseDto getComment(Long balanceGameId){
+
+        BalanceGame balanceGame = balanceGameRepository.findById(balanceGameId)
+                .orElseThrow(() -> BaseException.type(BalanceGameErrorCode.NOT_FOUND_BALANCE_GAME));
+
+        List<Comment> comments = balanceGame.getComments();
+
+        return ListGetCommentResponseDto.of(GetCommentResponseDto.of(comments));
     }
 }
