@@ -49,5 +49,20 @@ public class GameParticipant extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
+
+    public static GameParticipant create(
+            final EGameOption gameOption,
+            final BalanceGame balanceGame,
+            final Member member
+    ){
+        return GameParticipant.builder()
+                .gameOption(gameOption)
+                .balanceGame(balanceGame)
+                .member(member).build();
+    }
+
+    public void updateOption(final EGameOption gameOption){
+        this.gameOption = gameOption;
+    }
 }
 

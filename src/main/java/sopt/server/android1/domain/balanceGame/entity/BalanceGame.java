@@ -48,4 +48,18 @@ public class BalanceGame extends BaseTimeEntity{
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ECategory category;
+
+    public static BalanceGame create(final String title,
+                                     final String option1Title,
+                                     final String option2Title,
+                                     final LocalDateTime deadline,
+                                     final ECategory category) {
+        return BalanceGame.builder()
+                .title(title)
+                .option1Title(option1Title)
+                .option2Title(option2Title)
+                .deadline(deadline)
+                .category(category)
+                .build();
+    }
 }
