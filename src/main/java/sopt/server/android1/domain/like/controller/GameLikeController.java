@@ -16,7 +16,7 @@ public class GameLikeController {
 
     @PostMapping("/like")
     public void updateLike(
-            @RequestHeader("X-Member_Id") Long memberId,
+            @RequestHeader("X-Member-Id") Long memberId,
             @PathVariable Long balanceGameId,
             @RequestBody @Valid UpdateLikeRequestDto request
             ){
