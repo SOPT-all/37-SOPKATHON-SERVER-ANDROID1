@@ -45,4 +45,18 @@ public class Comment extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
+
+    public static Comment create(
+            final EGameOption gameOption,
+            final String content,
+            final BalanceGame balanceGame,
+            final Member member
+    ){
+        return Comment.builder()
+                .gameOption(gameOption)
+                .content(content)
+                .balanceGame(balanceGame)
+                .member(member)
+                .build();
+    }
 }

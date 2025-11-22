@@ -32,6 +32,7 @@ public class BalanceGameService {
     private final GameParticipantRepository gameParticipantRepository;
     private final GameLikeRepository gameLikeRepository;
 
+    @Transactional
     public void createBalanceGame(CreateBalanceGameCommandDto request) {
         BalanceGame balanceGame = BalanceGame.create(request.title(),
                 request.option1Title(),

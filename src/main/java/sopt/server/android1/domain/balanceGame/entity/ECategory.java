@@ -3,10 +3,6 @@ package sopt.server.android1.domain.balanceGame.entity;
 public enum ECategory {
     LOVE,
     STUDY,
-    FOOD,
-    FASHION,
-    FANTASY,
-    HOBBY,
     HUMOR,
-    HORROR
+    ETC
 }
