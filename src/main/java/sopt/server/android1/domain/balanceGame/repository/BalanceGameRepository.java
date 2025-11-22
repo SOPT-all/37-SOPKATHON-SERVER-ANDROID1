@@ -3,6 +3,7 @@ package sopt.server.android1.domain.balanceGame.repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -23,5 +24,5 @@ public interface BalanceGameRepository extends JpaRepository<BalanceGame, Long> 
             group by bg
             order by count(gl) desc, bg.deadline asc
             """)
-    List<BalanceGame> findHotBalanceGames(@Param("now") LocalDateTime now);
+    List<BalanceGame> findHotBalanceGames(@Param("now") LocalDateTime now, Pageable pageable);
 }

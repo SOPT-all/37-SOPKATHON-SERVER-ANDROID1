@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sopt.server.android1.domain.balanceGame.dto.command.CreateBalanceGameCommandDto;
@@ -17,6 +18,7 @@ import sopt.server.android1.domain.balanceGame.entity.BalanceGame;
 import sopt.server.android1.domain.balanceGame.entity.ECategory;
 import sopt.server.android1.domain.balanceGame.repository.BalanceGameRepository;
 import sopt.server.android1.domain.comment.entity.EGameOption;
+import sopt.server.android1.domain.like.repository.GameLikeLikeCountProjection;
 import sopt.server.android1.domain.like.repository.GameLikeRepository;
 import sopt.server.android1.domain.participant.entity.GameParticipant;
 import sopt.server.android1.domain.participant.repository.GameParticipantRepository;
@@ -71,7 +73,8 @@ public class BalanceGameService {
     }
 
     public BalanceGameListResponse getHotBalanceGames(Long memberId) {
-        List<BalanceGame> hotGames = balanceGameRepository.findHotBalanceGames(LocalDateTime.now());
+        List<BalanceGame> hotGames = balanceGameRepository
+                .findHotBalanceGames(LocalDateTime.now(), PageRequest.of(0, 3));
         return toListResponse(memberId, hotGames);
     }
 
@@ -108,24 +111,28 @@ public class BalanceGameService {
 
         Map<Long, EGameOption> memberSelections = getMemberSelections(memberId, balanceGameIds);
         Set<Long> likedGameIds = getLikedGameIds(memberId, balanceGameIds);
+        Map<Long, Long> likeCounts = getLikeCounts(balanceGameIds);
 
         List<BalanceGameDetailResponse> responses = balanceGames.stream()
-                .map(game -> buildResponse(game, memberSelections, likedGameIds))
+                .map(game -> buildResponse(game, memberSelections, likedGameIds, likeCounts))
                 .toList();
 
         return new BalanceGameListResponse(responses);
     }
 
     private BalanceGameDetailResponse toDetailResponse(Long memberId, BalanceGame balanceGame) {
-        Map<Long, EGameOption> memberSelections = getMemberSelections(memberId, List.of(balanceGame.getId()));
-        Set<Long> likedGameIds = getLikedGameIds(memberId, List.of(balanceGame.getId()));
+        List<Long> gameIdList = List.of(balanceGame.getId());
+        Map<Long, EGameOption> memberSelections = getMemberSelections(memberId, gameIdList);
+        Set<Long> likedGameIds = getLikedGameIds(memberId, gameIdList);
+        Map<Long, Long> likeCounts = getLikeCounts(gameIdList);
 
-        return buildResponse(balanceGame, memberSelections, likedGameIds);
+        return buildResponse(balanceGame, memberSelections, likedGameIds, likeCounts);
     }
 
     private BalanceGameDetailResponse buildResponse(BalanceGame game,
                                                     Map<Long, EGameOption> memberSelections,
-                                                    Set<Long> likedGameIds) {
+                                                    Set<Long> likedGameIds,
+                                                    Map<Long, Long> likeCounts) {
         Long gameId = game.getId();
         return new BalanceGameDetailResponse(
                 gameId,
@@ -133,6 +140,7 @@ public class BalanceGameService {
                 game.getOption1Title(),
                 game.getOption2Title(),
                 likedGameIds.contains(gameId),
+                Math.toIntExact(likeCounts.getOrDefault(gameId, 0L)),
                 memberSelections.getOrDefault(gameId, EGameOption.EMPTY),
                 game.getOption1Total(),
                 game.getOption2Total(),
@@ -164,5 +172,18 @@ public class BalanceGameService {
                 .stream()
                 .map(gameLike -> gameLike.getBalanceGame().getId())
                 .collect(Collectors.toSet());
+    }
+
+    private Map<Long, Long> getLikeCounts(List<Long> balanceGameIds) {
+        if (balanceGameIds.isEmpty()) {
+            return Collections.emptyMap();
+        }
+
+        return gameLikeRepository.countLikesByBalanceGameIds(balanceGameIds)
+                .stream()
+                .collect(Collectors.toMap(
+                        GameLikeLikeCountProjection::getBalanceGameId,
+                        GameLikeLikeCountProjection::getLikeCount
+                ));
     }
 }
